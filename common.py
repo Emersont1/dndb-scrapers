@@ -38,13 +38,14 @@ def open_db(path):
 def reference(db, link):
     s = link.string
     q=s.split(" pg. ")
-    print(q)
     db.execute("SELECT id from source WHERE name = ?;", (q[0],))
     rows = db.fetchall()
     if len(rows) == 0:
         db.execute("INSERT INTO source (name, url) VALUES (?,?);",[q[0], link.get("href")])
         db.execute("SELECT last_insert_rowid();")
         rows = db.fetchall()
-
-    print(rows)
     return [rows[0][0], int(q[1])]
+
+def cleanup_html(string):
+    # stub, to be fixed later
+    return string

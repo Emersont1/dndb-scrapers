@@ -38,14 +38,43 @@ def scrape_type(path):
         if td== None:
             print("We've got an issue with "+u)
             continue
-        name =td.find("h1").string
-        if name is None:
+        data = {}
+        data["name"] =td.find("h1").string
+        if data["name"] is None:
             for s in td.find("h1").descendants:
                 if s.string != None:
-                    name = str.lstrip(s.string)
+                    data["name"] = str.lstrip(s.string)
                     break
-        print(name)
-        print( common.reference(db, td.find("a", class_="external-link")))
+
+        source = common.reference(db, td.find("a", class_="external-link"))
+        data["source"] = source[0]
+        data["page"] = source[1]
+        data["requirements"] = None
+        main_c = 0
+        for child in td.find("span").children:
+            if child.name == "br" and child.next_sibling.name != "b":
+                main_c = child.next_sibling
+                break
+            if child.name != "b":
+                continue
+            if child.string == "Source":
+                # already processed
+                continue
+            if child.string == "Category":
+                data["category"] = str.lstrip(child.next_sibling.string)
+                continue
+            if child.string == "Requirement(s)":
+                data["requirements"] = str.lstrip(child.next_sibling.string)
+                continue
+            print(child.string +": " + child.next_sibling.string)
+        my_str = str(main_c)
+
+        while main_c.next_sibling != None:
+            main_c = main_c.next_sibling
+            my_str += str(main_c)
+
+        data["description"] = common.cleanup_html(my_str)
+        db.execute("INSERT INTO trait(name, category, requirements, description, source, page) VALUES (:name, :category, :requirements, :description, :source, :page);", data)
     conn.commit()
     conn.close()
 
