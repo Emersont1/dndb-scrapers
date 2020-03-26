@@ -34,3 +34,18 @@ def open_db(path):
             data = file.read()
             db.executescript(data)
         return conn
+
+def reference(db, link):
+    s = link.string
+    q=s.split(" pg. ")
+    db.execute("SELECT id from source WHERE name = ?;", (q[0],))
+    rows = db.fetchall()
+    if len(rows) == 0:
+        db.execute("INSERT INTO source (name, url) VALUES (?,?);",[q[0], link.get("href")])
+        db.execute("SELECT last_insert_rowid();")
+        rows = db.fetchall()
+    return [rows[0][0], int(q[1])]
+
+def cleanup_html(string):
+    # stub, to be fixed later
+    return string
