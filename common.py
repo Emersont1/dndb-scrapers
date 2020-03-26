@@ -47,10 +47,14 @@ def open_db(path):
 
 
 def integer_property(x):
-    fixed_string = re.sub("[,;%]", "", x).replace("- ", "-")
+    fixed_string = re.sub("[,;%]", "", x)
     strings = fixed_string.split(" ")
     for s in strings:
         if s != "":
+            if s in ["special", "see"]:
+                return 0
+            if s == "1/2":
+                return 0.5
             if s == "—":
                 return None
             else:
@@ -72,5 +76,8 @@ def reference(db, link):
 
 
 def cleanup_html(string):
-    # stub, to be fixed later
-    return string
+    removed_br = re.sub("<\/*br\/*>", "\n", string)
+    subbed_quotes = re.sub("[“”]", "\"", removed_br)
+    removed_class = re.sub("class=\"[a-z _\-]+\"", "", subbed_quotes)
+
+    return removed_class
