@@ -10,7 +10,9 @@ def url_esc(url):
     return url.replace("/", "_")
 
 
-def get_file(url):    
+def get_file(*parts):
+    url = os.path.join(*parts)
+    
     if not os.path.exists("__scraping_cache__"):
         os.mkdir("__scraping_cache__")
     if not os.path.exists("__scraping_cache__/" + url_esc(url)):
