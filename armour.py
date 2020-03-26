@@ -63,7 +63,7 @@ def scrape_armour(path):
                         "Armor Check Penalty",
                         "Arcane Spell Failure Chance",
                     ]:
-                        array_item = child.string.lower().replace(" ", "_").replace("armor", "arour") # okay that last bit is pedantry, BUT
+                        array_item = child.string.lower().replace(" ", "_").replace("armor", "armour") # okay that last bit is pedantry, BUT
                         data[array_item] = common.integer_property(child.next_sibling.string)
                         continue
                     if child.string == "Speed":
@@ -73,8 +73,24 @@ def scrape_armour(path):
                         continue
                     print(child.string + ": " + child.next_sibling.string)
             data["description"] = ""
-            #print(data)
-            db.execute("INSERT INTO armour (name, cost, weight, armour_bonus, max_dex, check_pen, arcane_failure_chance, speed_30, speed_20, description) VALUES (:name, :cost, :weight, :armour_bonus, :max_dex, :armour_check_penalty, :arcane_failure_chance, :speed_30, :speed_20, :description);", data)
+            u = 0
+            for header in td.find_all("h3"):
+                if header.string == "Description":
+                    u=header.next_sibling
+            while u != None:
+                data["description"] += str(u)
+                u = u.next_sibling
+            print(data)
+
+            # cleanup html in data["description"]
+
+            db.execute("INSERT INTO armour (name, cost, weight, armour_bonus, max_dex, check_pen, arcane_failure_chance, speed_30, speed_20, description) VALUES (:name, :cost, :weight, :armour_bonus, :max_dex_bonus, :armour_check_penalty, :arcane_spell_failure_chance, :speed_30, :speed_20, :description);", data)
+             db.execute("SELECT last_insert_rowid();")
+             rows = db.fetchall()
+            #i = rows[0][0]
+            #for x in sources:
+            #    x.append(i)
+            #    db.execute("INSERT INTO reference (table_name, source, page, destination) VALUES ('armour', ?, ?, ?);", x)
     conn.commit()
     conn.close()
 
