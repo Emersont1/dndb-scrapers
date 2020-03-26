@@ -30,6 +30,7 @@ def scrape_type(path):
             if a != None:
                 trait_urls.add(a.get("href"))
     print(len(trait_urls))
+
     for u in trait_urls:
         print(u)
         trait_html = common.get_file(domain+u);
@@ -46,9 +47,10 @@ def scrape_type(path):
                     data["name"] = str.lstrip(s.string)
                     break
 
-        source = common.reference(db, td.find("a", class_="external-link"))
-        data["source"] = source[0]
-        data["page"] = source[1]
+        #source = common.reference(db, td.find("a", class_="external-link"))
+        sources = []
+        #data["source"] = source[0]
+        #data["page"] = source[1]
         data["requirements"] = None
         main_c = 0
         for child in td.find("span").children:
@@ -58,7 +60,11 @@ def scrape_type(path):
             if child.name != "b":
                 continue
             if child.string == "Source":
-                # already processed
+                x = child.next_sibling
+                while x.name != "br":
+                    if x.name == "a":
+                        sources.append(common.reference(db,x))
+                    x=x.next_sibling
                 continue
             if child.string == "Category":
                 data["category"] = str.lstrip(child.next_sibling.string)
@@ -74,7 +80,16 @@ def scrape_type(path):
             my_str += str(main_c)
 
         data["description"] = common.cleanup_html(my_str)
-        db.execute("INSERT INTO trait(name, category, requirements, description, source, page) VALUES (:name, :category, :requirements, :description, :source, :page);", data)
+        print(sources)
+        print(data)
+        db.execute("INSERT INTO trait(name, category, requirements, description) VALUES (:name, :category, :requirements, :description);", data)
+        db.execute("SELECT last_insert_rowid();")
+        rows = db.fetchall()
+        i = rows[0][0]
+        for x in sources:
+            x.append(i)
+            db.execute("INSERT INTO reference (table_name, source, page, destination) VALUES ('trait', ?, ?, ?);", x)
+
     conn.commit()
     conn.close()
 
