@@ -8,7 +8,7 @@ else:
 
 
 def scrape_type(path):
-    conn = common.open_db(db_path)
+    conn = common.open_db(path)
 
 
 if __name__ == "__main__":
