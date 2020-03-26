@@ -9,7 +9,7 @@ else:
     db_path = sys.argv[1]
 
 
-def scrape_type(path):
+def scrape_trait(path):
     conn = common.open_db(path)
     db = conn.cursor()
     domain = "https://aonprd.com/"
@@ -102,4 +102,4 @@ def scrape_type(path):
 
 
 if __name__ == "__main__":
-    scrape_type(db_path)
+    scrape_trait(db_path)
