@@ -9,7 +9,7 @@ else:
 
 
 def scrape_armour(path):
-    conn = common.open_db(db_path)
+    conn = common.open_db(path)
     db = conn.cursor()
     domain = "https://aonprd.com/"
 
