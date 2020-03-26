@@ -6,8 +6,10 @@ if len(sys.argv) == 1:
 else:
     db_path = sys.argv[1]
 
+
 def scrape_type(path):
     conn = common.open_db(db_path)
+
 
 if __name__ == "__main__":
     scrape_type(db_path)
