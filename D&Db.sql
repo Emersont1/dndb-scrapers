@@ -47,6 +47,7 @@ CREATE TABLE IF NOT EXISTS weapon(
   range INTEGER,
   special TEXT,
   category TEXT,
+  proficiency TEXT,
   description TEXT
 );
 

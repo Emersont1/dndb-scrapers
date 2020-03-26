@@ -97,6 +97,10 @@ def scrape_weapon(path):
                 a = child.next_sibling.string.split(" ")
                 data["dmg_s"] = a[1]
                 data["dmg_m"] = a[3]
+                if data["dmg_s"] == "—":
+                    data["dmg_s"] = None
+                if data["dmg_m"] == "—":
+                    data["dmg_m"] = None
                 continue
             if child.string == "Type":
                 data["dmg_type"] = damage_type(child.next_sibling.string)
@@ -120,7 +124,7 @@ def scrape_weapon(path):
         data["description"] = common.cleanup_html(my_str)
         print(data)
         db.execute(
-            "INSERT INTO weapon(name, cost, weight, dmg_s, dmg_m, dmg_type, critical, range, special, category, description) VALUES(:name, :cost, :weight, :dmg_s, :dmg_m, :dmg_type, :critical, :range, :special, :category, :description);",
+            "INSERT INTO weapon(name, cost, weight, dmg_s, dmg_m, dmg_type, critical, range, special, category, proficiency, description) VALUES(:name, :cost, :weight, :dmg_s, :dmg_m, :dmg_type, :critical, :range, :special, :category, :proficiency, :description);",
             data,
         )
         db.execute("SELECT last_insert_rowid();")
