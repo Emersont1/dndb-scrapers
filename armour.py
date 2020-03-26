@@ -42,7 +42,6 @@ def scrape_armour(path):
             main_c = 0
             sources = []
             for child in td.find("span").children:
-                for child in td.find("span").children:
                     if child.name == "br" and child.next_sibling.name != "b":
                         main_c = child.next_sibling
                         break
@@ -50,9 +49,9 @@ def scrape_armour(path):
                         continue
                     if child.string == "Source":
                         x = child.next_sibling
-                        while x.name != "br":
+                        while x.name != "h3":
                             if x.name == "a":
-                                sources.append([str(x)])  # common.reference(db,x))
+                                sources.append(common.reference(db,x))
                             x = x.next_sibling
                         continue
                     if child.string in [
@@ -72,25 +71,26 @@ def scrape_armour(path):
                         data["speed_20"] = common.integer_property(speeds[1])
                         continue
                     print(child.string + ": " + child.next_sibling.string)
-            data["description"] = ""
-            u = 0
+            my_str = ""
+            u = None
             for header in td.find_all("h3"):
                 if header.string == "Description":
                     u=header.next_sibling
             while u != None:
-                data["description"] += str(u)
+                my_str += str(u)
                 u = u.next_sibling
             print(data)
 
-            # cleanup html in data["description"]
+            data["description"] = common.cleanup_html(my_str)
 
             db.execute("INSERT INTO armour (name, cost, weight, armour_bonus, max_dex, check_pen, arcane_failure_chance, speed_30, speed_20, description) VALUES (:name, :cost, :weight, :armour_bonus, :max_dex_bonus, :armour_check_penalty, :arcane_spell_failure_chance, :speed_30, :speed_20, :description);", data)
-             db.execute("SELECT last_insert_rowid();")
-             rows = db.fetchall()
-            #i = rows[0][0]
-            #for x in sources:
-            #    x.append(i)
-            #    db.execute("INSERT INTO reference (table_name, source, page, destination) VALUES ('armour', ?, ?, ?);", x)
+            db.execute("SELECT last_insert_rowid();")
+            rows = db.fetchall()
+            i = rows[0][0]
+            for x in sources:
+                x.append(i)
+                print(x)
+                db.execute("INSERT INTO reference (table_name, source, page, destination) VALUES ('armour', ?, ?, ?);", x)
     conn.commit()
     conn.close()
 
