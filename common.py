@@ -2,6 +2,7 @@
 
 import requests
 import os
+import re  # eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
 import sqlite3
 
 def url_esc(url):
@@ -34,3 +35,13 @@ def open_db(path):
             data = file.read()
             db.executescript(data)
         return conn
+
+def integer_property(x):
+    fixed_string = re.sub("[,;%]", "", x).replace("- ", "-")
+    strings = fixed_string.split(" ")
+    for s in strings:
+        if s != "":
+            if s=="—":
+                return None
+            else:
+                return int(s)
