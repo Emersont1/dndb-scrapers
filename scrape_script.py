@@ -2,6 +2,7 @@
 
 from armour import *
 from traits import *
+from weapons import *
 
 import sys
 
