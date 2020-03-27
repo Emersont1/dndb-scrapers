@@ -36,6 +36,6 @@ jobs:
         ./scrape_script.py
     - name: Upload result for test
       uses: actions/upload-artifact@v1
-        with:
-          name: pathfinder.sqlite3
-          path: pathfinder.sqlite3
+      with:
+        name: pathfinder.sqlite3
+        path: pathfinder.sqlite3
