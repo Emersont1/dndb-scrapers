@@ -34,3 +34,25 @@ CREATE TABLE IF NOT EXISTS armour(
     speed_20 INTEGER,
     description TEXT
 );
+
+CREATE TABLE IF NOT EXISTS weapon(
+  id INTEGER PRIMARY KEY,
+  name TEXT,
+  cost INTEGER,
+  weight REAL,
+  dmg_s TEXT,
+  dmg_m TEXT,
+  dmg_type INTEGER,
+  critical TEXT,
+  range INTEGER,
+  special TEXT,
+  category TEXT,
+  proficiency TEXT,
+  description TEXT
+);
+
+CREATE TABLE IF NOT EXISTS weapon_group(
+  id INTEGER PRIMARY KEY,
+  weapon_id INTEGER,
+  group_name TEXT
+);
