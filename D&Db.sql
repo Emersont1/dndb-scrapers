@@ -59,3 +59,9 @@ CREATE TABLE IF NOT EXISTS spell_class(
   level INTEGER,
   class_id TEXT -- Change to integer and link when classes have been scraped
 );
+
+CREATE TABLE IF NOT EXISTS spell_mythic(
+  id  INTEGER PRIMARY KEY,
+  spell_id INTEGER,
+  description TEXT
+);
