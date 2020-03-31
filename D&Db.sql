@@ -34,3 +34,28 @@ CREATE TABLE IF NOT EXISTS armour(
     speed_20 INTEGER,
     description TEXT
 );
+
+CREATE TABLE IF NOT EXISTS spell(
+  id INTEGER PRIMARY KEY,
+  name TEXT
+);
+
+CREATE TABLE IF NOT EXISTS spell_descriptor(
+  id INTEGER PRIMARY KEY,
+  spell_id INTEGER,
+  descriptor TEXT
+);
+
+CREATE TABLE IF NOT EXISTS spell_component(
+  id INTEGER PRIMARY KEY,
+  spell_id INTEGER,
+  component TEXT,
+  details TEXT
+);
+
+CREATE TABLE IF NOT EXISTS spell_class(
+  id INTEGER PRIMARY KEY,
+  spell_id INTEGER,
+  level INTEGER,
+  class_id TEXT -- Change to integer and link when classes have been scraped
+);
