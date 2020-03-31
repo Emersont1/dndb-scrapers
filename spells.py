@@ -97,6 +97,8 @@ def scrape_armour(path):
                     ]:
                         array_name = s.lower().replace(" ", "_")
                         data[array_name] = str.strip(e.string)
+                        print(array_name)
+                        print(data[array_name])
                         if data[array_name][-1] == ";":
                             data[array_name] = data[array_name][:-1]
                     else:
@@ -110,7 +112,7 @@ def scrape_armour(path):
             while e != None and e.name != "h1" and e.name != "h2":
                 desc_str += str(e)
                 e = e.next_sibling
-            if e.string[:6] == "Mythic":
+            if e != None and e.string!= None and e.string[:6] == "Mythic":
                 mythic_data["name"] = data["name"]
                 if e.next_sibling.string == "Source":
                     while e.name != "br":
