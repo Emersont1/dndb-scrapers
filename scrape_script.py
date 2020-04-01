@@ -14,3 +14,4 @@ if __name__ == "__main__":
     # Alphabetically ordered
     scrape_armour(db_path)
     scrape_trait(db_path)
+    scrape_spells(db_path)

@@ -1,7 +1,7 @@
 -- SQL file to generate the Database
 CREATE TABLE IF NOT EXISTS source(
   id INTEGER PRIMARY KEY,
-  name TEXT,
+  name TEXT UNIQUE,
   url TEXT
 );
 
@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS reference(
 
 CREATE TABLE IF NOT EXISTS trait(
   id INTEGER PRIMARY KEY,
-  name TEXT,
+  name TEXT UNIQUE,
   category TEXT,
   requirements TEXT,
   description TEXT
@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS trait(
 
 CREATE TABLE IF NOT EXISTS armour(
     id INTEGER PRIMARY KEY,
-    name TEXT,
+    name TEXT UNIQUE,
     cost INTEGER,
     weight INTEGER,
     armour_bonus INTEGER,
@@ -36,10 +36,28 @@ CREATE TABLE IF NOT EXISTS armour(
 );
 
 CREATE TABLE IF NOT EXISTS spell(
-  id INTEGER PRIMARY KEY,
-  name TEXT
+  'id' INTEGER PRIMARY KEY,
+  'name' TEXT UNIQUE,
+  'spellike_level' INTEGER,
+  'school' TEXT,
+  'subschool' TEXT,
+  'casting_time' TEXT,
+  'components' TEXT,
+  'range' TEXT,
+  'area' TEXT,
+  'effect' TEXT,
+  'targets' TEXT,
+  'duration' TEXT,
+  'saving_throw' TEXT,
+  'spell_resistance' TEXT,
+  'description' TEXT,
+  'description_short' TEXT,
+--  'source' TEXT,
+--  'mythic_text' TEXT,
+--  'mythic_augmentations' TEXT,
+--  'haunt_text' TEXT,
+'material_costs' INTEGER
 );
-
 CREATE TABLE IF NOT EXISTS spell_descriptor(
   id INTEGER PRIMARY KEY,
   spell_id INTEGER,
@@ -63,5 +81,12 @@ CREATE TABLE IF NOT EXISTS spell_class(
 CREATE TABLE IF NOT EXISTS spell_mythic(
   id  INTEGER PRIMARY KEY,
   spell_id INTEGER,
+  description TEXT
+);
+
+CREATE TABLE IF NOT EXISTS spell_mythic_augmentation(
+  id  INTEGER PRIMARY KEY,
+  spell_id INTEGER,
+  augmentation_level INTEGER,
   description TEXT
 );
